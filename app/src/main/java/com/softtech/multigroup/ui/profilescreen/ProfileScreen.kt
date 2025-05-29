@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -18,6 +19,16 @@ import com.softtech.multigroup.ui.route.Screen
 
 @Composable
 fun ProfileScreen(navHostController: NavHostController,profile:String?) {
+
+    val savedStateHandle = navHostController.currentBackStackEntry?.savedStateHandle
+    val result = savedStateHandle?.get<String>("result_key")
+
+    LaunchedEffect(result) {
+        result?.let {
+            savedStateHandle.remove<String>("result_key")
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -40,6 +51,14 @@ fun ProfileScreen(navHostController: NavHostController,profile:String?) {
             "profilearg == $profile",
             color = MaterialTheme.colorScheme.scrim,
             style = MaterialTheme.typography.bodyLarge
+        )
+
+        Spacer(modifier = Modifier.size(24.dp))
+
+        Text(
+            "Profile Edit Screen'den aldıgımız data :: $result",
+            color = MaterialTheme.colorScheme.scrim,
+            style = MaterialTheme.typography.bodySmall
         )
     }
 }
